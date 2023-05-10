@@ -7,8 +7,6 @@
     "build": "next build",
     "ssg": "next build && next export -o dist",
     "git": "git add . && git commit -a -m $M",
-    "ftp": "M=deploy yarn git && git ftp push -s test -k",
-    "deploy": "yarn ssg && yarn ftp",
     "ncu": "yarn upgrade-interactive"
   },
   "dependencies": {
