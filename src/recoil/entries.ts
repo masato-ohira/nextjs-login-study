@@ -113,6 +113,7 @@ export const useEntryControl = () => {
     body: string
   }
 
+  // 記事を新規追加するための関数
   const addEntry = async ({ title, body }: { title: string; body: string }) => {
     try {
       // 送信するパラメータを設定
@@ -146,6 +147,7 @@ export const useEntryControl = () => {
     }
   }
 
+  // 記事を編集するための関数
   const editEntry = async ({ id, title, body }: EditEntryType) => {
     try {
       // 送信するパラメータを設定
@@ -180,6 +182,7 @@ export const useEntryControl = () => {
     }
   }
 
+  // 記事を削除するための関数
   const deleteEntry = async (id: string) => {
     try {
       // axiosを使用して、APIからエントリーを削除
