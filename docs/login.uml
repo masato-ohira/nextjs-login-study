@@ -1,0 +1,39 @@
+@startuml
+
+title ログイン処理
+
+start
+
+:IDとパスワードを入力;
+
+if (MT-APIで認証) then (成功)
+
+  :トークンを取得;
+  :ローカルストレージに
+  認証情報を保存;
+  note right
+  * トークンを保存
+  * 現在時刻を保存
+  endnote
+
+  :マイページに遷移;
+  :トークンとAPIで
+  MTの各操作;
+  note right
+  * 記事一覧の表示
+  * 記事の新規追加
+  * 記事の編集
+  * 記事の削除
+  endnote
+
+  end
+
+else (失敗)
+
+end
+
+endif
+
+
+
+@enduml

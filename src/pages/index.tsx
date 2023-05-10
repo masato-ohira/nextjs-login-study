@@ -13,24 +13,20 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { useMtAuth } from '@/recoil/auth'
+import { useMtAuth } from '@/recoil/auth/hooks'
 import { useRouter } from 'next/router'
+import type { LoginParams } from '@/recoil/auth/types'
 
 const LoginPage = () => {
   const { login } = useMtAuth()
   const router = useRouter()
   const toast = useToast()
 
-  interface FormProps {
-    username: string
-    password: string
-  }
-
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<FormProps>()
+  } = useForm<LoginParams>()
 
   const onSubmit = async (data: any) => {
     try {

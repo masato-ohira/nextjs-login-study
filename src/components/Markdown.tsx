@@ -1,9 +1,9 @@
 import MarkdownIt from 'markdown-it'
+import { cloneDeep } from 'lodash-es'
+
+import { githubCss } from './Markdown.styles'
 import { Box } from '@chakra-ui/react'
 import type { BoxProps } from '@chakra-ui/react'
-import { cloneDeep } from 'lodash-es'
-import { githubCss } from './Markdown.styles'
-// import { css } from '@emotion/react'
 
 const mdOptions: any = {
   injected: true,

@@ -1,6 +1,7 @@
-import { useMtAuth } from '@/recoil/auth'
-import { Button } from '@chakra-ui/react'
+import { useMtAuth } from '@/recoil/auth/hooks'
 import { useState } from 'react'
+
+import { Button } from '@chakra-ui/react'
 import { MdLogout } from 'react-icons/md'
 
 export const LogoutButton = () => {

@@ -1,8 +1,11 @@
-import { Container, Box, Grid, Text, Stack } from '@chakra-ui/react'
-import { useEntries, EntryType } from '@/recoil/entries'
-import { Loading } from './Loading'
 import dayjs from 'dayjs'
 import NextLink from 'next/link'
+
+import { useEntries } from '@/recoil/entries/hooks'
+import type { EntryType } from '@/recoil/entries/types'
+
+import { Loading } from './Loading'
+import { Container, Box, Grid, Text, Stack } from '@chakra-ui/react'
 
 export const EntryList = () => {
   const { data, state } = useEntries()

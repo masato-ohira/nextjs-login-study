@@ -1,6 +1,4 @@
 import {
-  selector,
-  selectorFamily,
   useRecoilValueLoadable,
   useRecoilValue,
   useRecoilRefresher_UNSTABLE,
@@ -8,65 +6,17 @@ import {
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { isString, orderBy } from 'lodash-es'
-import { tokenAtom } from './auth'
+
+import { tokenAtom } from '@/recoil/auth/index'
+import { entryDetail, entryList } from '@/recoil/entries'
+import type { EditEntryType, EntryType } from '@/recoil/entries/types'
 
 const apiPath = `/mt-admin/mt-data-api.cgi/v5/sites/4`
-
-export type EntryType = {
-  id: number
-  basename: string
-  title: string
-  body: string
-  date: string
-  createdDate: string
-  modifiedDate: string
-  assets: any[]
-}
-
-// selectorを使用して
-// エントリーの一覧情報を取得するselectorを定義
-export const entriesSelector = selector({
-  key: 'entriesSelector',
-  get: async () => {
-    try {
-      // axiosを使用して、APIからエントリーの一覧情報を取得
-      const { data } = await axios.get(`${apiPath}/entries/`)
-      // エントリーの一覧情報から、itemsの配列のみを抽出して返す
-      return data.items
-    } catch (error) {
-      // エラーが発生した場合は、その内容を出力
-      console.log({ error })
-      // 空の配列を返す
-      return []
-    }
-  },
-})
-
-// selectorFamilyを使用して
-// 特定のエントリーの詳細情報を取得するselectorを定義
-export const entryDetail = selectorFamily({
-  key: 'entryDetail',
-  get: (id: string) => async () => {
-    try {
-      // axiosを使用して、APIから詳細情報を取得
-      const { data } = await axios.get(`${apiPath}/entries/${id}/`)
-
-      // 取得した詳細情報を返す
-      return data
-    } catch (error) {
-      // エラーが発生した場合は、その内容を出力
-      console.log({ error })
-
-      // nullを返す
-      return null
-    }
-  },
-})
 
 // hooks
 // ------------------------------
 export const useEntries = () => {
-  const loadable = useRecoilValueLoadable(entriesSelector)
+  const loadable = useRecoilValueLoadable(entryList)
   return {
     data: orderBy(loadable.contents, 'modifiedDate', 'desc'),
     state: loadable.state,
@@ -100,21 +50,17 @@ export const useEntryControl = () => {
 
   // Recoilのselectorを使用して
   // 一覧を更新するための関数
-  const refreshList = useRecoilRefresher_UNSTABLE(entriesSelector)
+  const refreshList = useRecoilRefresher_UNSTABLE(entryList)
 
   // Recoilのselectorを使用して
   // 詳細を更新するための関数
   const refreshDetail = useRecoilRefresher_UNSTABLE(entryDetail(routeID))
 
-  // EditEntryType型を定義
-  type EditEntryType = {
-    id: string
-    title: string
-    body: string
-  }
-
   // 記事を新規追加するための関数
-  const addEntry = async ({ title, body }: { title: string; body: string }) => {
+  const addEntry = async ({
+    title,
+    body,
+  }: Pick<EntryType, 'title' | 'body'>) => {
     try {
       // 送信するパラメータを設定
       const params = new URLSearchParams()
@@ -148,7 +94,11 @@ export const useEntryControl = () => {
   }
 
   // 記事を編集するための関数
-  const editEntry = async ({ id, title, body }: EditEntryType) => {
+  const editEntry = async ({
+    id,
+    title,
+    body,
+  }: Pick<EntryType, 'id' | 'title' | 'body'>) => {
     try {
       // 送信するパラメータを設定
       const params = new URLSearchParams()

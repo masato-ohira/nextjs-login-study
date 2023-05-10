@@ -1,9 +1,10 @@
-import { useMtAuth } from '@/recoil/auth'
-import { Box } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
 import { ReactNode, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useMtAuth } from '@/recoil/auth/hooks'
+
 import { Loading } from './Loading'
 import { Header } from './Header'
+import { Box } from '@chakra-ui/react'
 
 // 認証されたユーザーしかアクセスできないページに
 // アクセスするためのコンポーネント

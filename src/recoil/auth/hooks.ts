@@ -1,33 +1,12 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { atom, useRecoilState } from 'recoil'
-import { recoilPersist } from 'recoil-persist'
+import { useRecoilState } from 'recoil'
 import dayjs from 'dayjs'
 
+import { tokenAtom } from '@/recoil/auth'
+import type { LoginParams } from '@/recoil/auth/types'
+
 const apiPath = `/mt-admin/mt-data-api.cgi/v5`
-
-const { persistAtom } = recoilPersist({
-  // 保存するためのキーを設定
-  key: 'login-demo-recoil',
-  // windowが存在する場合、localStorageを使用して永続化
-  // windowが存在しない場合、undefinedを指定して非永続化
-  storage: typeof window === 'undefined' ? undefined : localStorage,
-})
-
-type TokenType = {
-  accessToken: string
-  expiresIn: number
-  remember: boolean
-  sessionId: string
-  now: string
-} | null
-
-// アクセストークン情報を管理するatomを定義
-export const tokenAtom = atom<TokenType>({
-  key: 'tokenAtom', // atomの一意のキー
-  default: null, // 初期値はnullとする
-  effects_UNSTABLE: [persistAtom], // persistAtomを使用して、永続化する
-})
 
 // hooks
 // ------------------------------
@@ -45,10 +24,6 @@ export const useMtAuth = () => {
     }
   }
 
-  type LoginParams = {
-    username: string
-    password: string
-  }
   // ログイン関数の定義
   const login = async (params: LoginParams) => {
     try {
@@ -122,20 +97,30 @@ export const useMtAuth = () => {
         return dayjs().diff(date, 'hours') < 1
       }
 
+      const canRefresh = (date: string) => {
+        return dayjs().diff(date, 'hours') > 0.5
+      }
+
       // 認証情報が存在しており、かつ有効期限内である場合
       if (auth && isValid(auth.now)) {
-        // トークンを更新するためのPOSTリクエストを送信する
-        let { data } = await axios.post(`${apiPath}/token/`, null, {
-          headers: {
-            'X-MT-Authorization': `MTAuth sessionId=${auth?.sessionId}`,
-          },
-        })
-        // トークンを更新し、現在時刻を設定する
-        setToken({
-          ...auth,
-          accessToken: data.accessToken,
-          now: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-        })
+        // トークン更新時刻から30分以上経過している場合は
+        // APIを介してトークンを更新する
+        // ※ この処理でAPIの過剰なリクエストを抑制する
+        if (canRefresh(auth.now)) {
+          // トークンを更新するためのPOSTリクエストを送信する
+          let { data } = await axios.post(`${apiPath}/token/`, null, {
+            headers: {
+              'X-MT-Authorization': `MTAuth sessionId=${auth?.sessionId}`,
+            },
+          })
+          // トークンを更新し、現在時刻を設定する
+          setToken({
+            ...auth,
+            accessToken: data.accessToken,
+            now: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+          })
+        }
+
         // trueを返す
         return true
       } else {

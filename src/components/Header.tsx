@@ -1,10 +1,11 @@
-import { Box, Button, Flex, Text, HStack } from '@chakra-ui/react'
-import React from 'react'
-import { LogoutButton } from '@/components/LogoutButton'
-import { MdAdd, MdLogout } from 'react-icons/md'
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
 import { includes } from 'lodash-es'
+import NextLink from 'next/link'
+
+import { useRouter } from 'next/router'
+
+import { LogoutButton } from '@/components/LogoutButton'
+import { MdAdd } from 'react-icons/md'
+import { Box, Button, Flex, Text, HStack } from '@chakra-ui/react'
 
 export const Header = () => {
   const router = useRouter()
