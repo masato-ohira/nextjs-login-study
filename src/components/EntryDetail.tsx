@@ -12,6 +12,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+// import { css } from '@emotion/react'
 
 const MDEditor = dynamic(
   async () => {
@@ -145,7 +146,21 @@ export const EntryDetail = () => {
             </HStack>
           </HStack>
           <Box>
-            <MDEditor {...editorProps} />
+            <MDEditor
+              {...editorProps}
+              // css={css`
+              //   .w-md-editor-area {
+              //     background-color: #222;
+              //     color: #fff;
+              //     border-radius: 0;
+              //     border: none;
+
+              //     a {
+              //       color: var(--chakra-colors-blue-200);
+              //     }
+              //   }
+              // `}
+            />
           </Box>
         </Stack>
       </Box>
