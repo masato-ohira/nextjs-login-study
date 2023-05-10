@@ -10,8 +10,8 @@ module.exports = withRemoveImports({
   async rewrites() {
     return [
       {
-        source: '/mt-admin/:path*',
-        destination: `${process.env.MT_URL}/:path*`,
+        source: '/mt-admin/mt-data-api.cgi/:path*',
+        destination: `${process.env.MT_URL}/mt-data-api.cgi/:path*`,
       },
     ]
   },
