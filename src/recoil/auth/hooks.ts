@@ -16,7 +16,7 @@ export const useMtAuth = () => {
   const router = useRouter()
 
   // 認証状態を判定する関数を定義
-  const isAuthed = () => {
+  const hasAuth = () => {
     if (auth) {
       return true
     } else {
@@ -136,7 +136,7 @@ export const useMtAuth = () => {
 
   return {
     auth,
-    isAuthed,
+    hasAuth,
     login,
     logout,
     logoutWithApi,

@@ -11,13 +11,13 @@ import { Box } from '@chakra-ui/react'
 export const Authorized = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
   const [ready, setReady] = useState(false)
-  const { isAuthed, refreshToken } = useMtAuth()
+  const { hasAuth, refreshToken } = useMtAuth()
 
   useEffect(() => {
     // ページが読み込まれた時に認証済みかどうかチェックし
     // 認証済みであればトークンを更新し、子要素を表示する
     const init = async () => {
-      if (isAuthed()) {
+      if (hasAuth()) {
         await refreshToken()
         setReady(true)
       } else {
@@ -31,7 +31,7 @@ export const Authorized = ({ children }: { children: ReactNode }) => {
   // ローディング画面を表示する
   if (!ready) return <Loading />
   // 認証されている場合、ヘッダーと子要素を表示する
-  if (isAuthed())
+  if (hasAuth())
     return (
       <>
         <Header />
