@@ -13,10 +13,12 @@ import type { EditEntryType, EntryType } from '@/recoil/entries/types'
 
 const apiPath = `/mt-admin/mt-data-api.cgi/v5/sites/4`
 
-// hooks
-// ------------------------------
+// エントリーリストの値を読み込むカスタムフック
 export const useEntries = () => {
+  // entryListを取得する
   const loadable = useRecoilValueLoadable(entryList)
+  // contentsプロパティをmodifiedDateで降順にソートし
+  // データと読み込み状態を返す
   return {
     data: orderBy(loadable.contents, 'modifiedDate', 'desc'),
     state: loadable.state,
