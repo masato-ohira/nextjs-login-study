@@ -9,7 +9,7 @@ import { isString, orderBy } from 'lodash-es'
 
 import { tokenAtom } from '@/recoil/auth/index'
 import { entryDetail, entryList } from '@/recoil/entries'
-import type { EditEntryType, EntryType } from '@/recoil/entries/types'
+import type { EntryType } from '@/recoil/entries/types'
 
 const apiPath = `/mt-admin/mt-data-api.cgi/v5/sites/4`
 
